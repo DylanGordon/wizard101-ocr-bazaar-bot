@@ -83,7 +83,7 @@ def buyAllItemsOnPage():
             print(f"Failed To Purchase item")
             return 2
         
-#time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
+time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
 while True:
     wallHangingsCategory = (465, 232)
     pyautogui.click(wallHangingsCategory[0] + randint(-10, 10), wallHangingsCategory[1] + randint(-5, 5))
