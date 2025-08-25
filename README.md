@@ -96,6 +96,7 @@ for i, rel_y in enumerate(item_positions):
 Out of the box the bot doesn't utilize OCR to detect what items its purchasing, If you decide you want the bot to read whats its purchasing and don't mind that it can slow things down I reccomend that you use [pytesseract](https://pypi.org/project/pytesseract/) and take advantage of the following:
 
 ```python
+import numpy as np # pip install numpy
 import pyautogui
 import pytesseract # pip install pytesseract
 import time
