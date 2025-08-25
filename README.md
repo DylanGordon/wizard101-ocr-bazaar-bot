@@ -92,3 +92,68 @@ for i, rel_y in enumerate(item_positions):
 ```
 
 # Additional Upgrades
+
+Out of the box the bot doesn't utilize OCR to detect what items its purchasing, If you decide you want the bot to read whats its purchasing and don't mind that it can slow things down I reccomend that you use [pytesseract](https://pypi.org/project/pytesseract/) and take advantage of the following:
+
+```python
+import pyautogui
+import pytesseract # pip install pytesseract
+import time
+from PIL import Image # pip install pillow
+from random import randint
+
+# https://github.com/UB-Mannheim/tesseract/releases/tag/v5.4.0.20240606
+pytesseract.pytesseract.tesseract_cmd = r'C:\\Users\\<WINDOWS USERNAME HERE>\\AppData\\Local\\Programs\\Tesseract-OCR\\tesseract.exe'
+
+for i, rel_y in enumerate(item_positions):
+    screen_x = 460 + (width // 2) + 20
+    screen_y = 240 + item_positions[0]
+    print(f"Clicking item #{i+1} at ({screen_x}, {screen_y})")
+    if clickedCount > 0:
+        time.sleep(0.25)
+    pyautogui.click(screen_x + randint(-5, 5), screen_y + randint(-3, 3))
+    clickedCount += 1
+
+    text_region_x = screen_x - 180  
+    text_region_y = screen_y - 15   
+    text_region_width = 360         
+    text_region_height = 32         
+    
+    try:
+        text_screenshot = pyautogui.screenshot(region=(text_region_x, text_region_y, text_region_width, text_region_height))
+        img_array = np.array(text_screenshot)
+        
+        yellow_mask = (
+            (img_array[:,:,0] > 200) &  
+            (img_array[:,:,1] > 180) &  
+            (img_array[:,:,2] < 80)     
+        )
+        
+        new_img = np.ones_like(img_array) * 255
+        new_img[yellow_mask] = [0, 0, 0]
+        processed_img = Image.fromarray(new_img.astype('uint8'))
+        processed_img = processed_img.convert('L')
+        processed_img = processed_img.resize((processed_img.width * 3, processed_img.height * 3), Image.LANCZOS)
+        
+        item_name = pytesseract.image_to_string(processed_img, config='--psm 6').strip()
+
+            
+    except Exception as e:
+        print(f"OCR error for item {i+1}: {e}") # rest of code below that buys item 
+```
+
+The code above zooms into each item on the catalog and enhances the accuracy on the read by resizing the image, increasing its size to make the text more readable. It then applies a color mask to isolate the yellow text, converting it into black text on a white background. This binarization improves contrast, which is ideal for Tesseract to accurately recognize the characters. Then Tesseract processes the high-contrast image, extracting the item name.
+
+<img width="360" height="32" alt="item_7_original" src="https://github.com/user-attachments/assets/89094885-25b3-4f5e-8f83-449e8a5b97a9" /><br>
+<img width="1080" height="96" alt="item_7_processed" src="https://github.com/user-attachments/assets/2b9a04f3-e093-4337-b97f-fcf2d02cccae" />
+
+Additionally, if you want to take this a step further you can also make the bot send alerts to your discord server with embeds by doing the following:
+
+```python
+import requests # add import to the top of controller.py (pip install requests)
+
+requests.post("<PUT YOUR DISCORD WEBHOOK URL HERE>",json={"content":f"Purchased Item"}) # THIS IS THE ONLY LINE U NEED TO ADD ON LINE 80 IN controller.py
+```
+
+# Special Thanks
+Special Thanks to [asweigart](https://github.com/asweigart/pyautogui) for making the library I used to make a majority of this bot work! Without it would have taken much longer to make it work on my own.
