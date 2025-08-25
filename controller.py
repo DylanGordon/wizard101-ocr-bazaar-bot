@@ -61,7 +61,7 @@ def buyAllItemsOnPage():
         try:
             pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
             pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
-            time.sleep(0.1)
+            time.sleep(0.3)
             try:
                 already_sold = pyautogui.locateOnScreen('sold.png', confidence=0.6, grayscale=True)
                 if already_sold:
@@ -82,8 +82,7 @@ def buyAllItemsOnPage():
         except:
             print(f"Failed To Purchase item")
             return 2
-
-            
+        
 #time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
 while True:
     wallHangingsCategory = (465, 232)
