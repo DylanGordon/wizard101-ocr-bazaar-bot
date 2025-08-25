@@ -68,7 +68,7 @@ while True:
         continue
 ```
 
-Now, simply open the Bazaar, select the category you want to target, type the item into the search bar, then activate the bot. Switch back to Wizard101 and watch as the bot automatically scans and snipes every matching item that appears on screen.
+Now, simply open the Bazaar, select the category you want to target, type the item into the search bar, then activate the bot. Switch back to Wizard101 and watch as the bot automatically scans and snipes every matching item that appears on screen. If you want to turn it off press Ctrl+Alt+Del and the script should turn off.
 
 ![1](https://github.com/user-attachments/assets/88cfde44-1c06-4388-be94-64299af71985)
 
@@ -81,7 +81,7 @@ Additionally, if you want to take this a step further and scale this up with vir
 
 In earlier versions, the bot relied on OCR and full image recognition to find items and correctly position them, which was slow and prone to errors. Now, it takes targeted screenshots of the item area and scans pixels for yellow text, using color thresholds and vertical spacing to detect items without OCR. Once identified, it calculates click positions relative to the screenshot. After a purchase, it assumes remaining items shift up, continuing in the same relative positions, combining color-based detection with fixed coordinates for fast, reliable sniping.
 
-<img width="660" height="550" alt="debug_all_9_items" src="https://github.com/user-attachments/assets/7391969f-70e7-438e-9cf3-f5276fecafbc" />><br>
+<img width="660" height="550" alt="debug_all_9_items" src="https://github.com/user-attachments/assets/7391969f-70e7-438e-9cf3-f5276fecafbc" /><br>
 
 Due to this being a snipe bot its coded to always assume that if something is purchased that the next item will move up. If you decide you don’t want this logic you can make a small tweak to the code to make it click each item from top to bottom similar to the screenshot above. Go to line 52 on controller.py and make the following change:
 
