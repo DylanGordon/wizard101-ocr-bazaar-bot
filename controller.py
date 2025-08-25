@@ -15,6 +15,10 @@ def buy_button_active():
     return False
 
 def buyAllItemsOnPage():
+    # nothing showed up in items for sale list so return and refresh page
+    if not buy_button_active():
+        return 0
+
     list_region = (460, 240, 660, 540)
     screenshot = pyautogui.screenshot(region=list_region)
 
@@ -41,11 +45,7 @@ def buyAllItemsOnPage():
                 # LIMIT TO MAX 9 ITEMS AS THERE IS ONLY 9 SLOTS IN THE BAZAAR
                 if len(item_positions) >= 9:
                     break
-
-    # nothing showed up in items for sale list so return and refresh page
-    if not buy_button_active():
-        return 0
-
+                    
     clickedCount = 0
     for i, rel_y in enumerate(item_positions):
         screen_x = 460 + (width // 2) + 20
