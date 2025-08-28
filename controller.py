@@ -28,7 +28,7 @@ def waitforconfirmbuy():
                 return 2
         except:
             pass
-        time.sleep(0.2)
+        time.sleep(0.3)
 
 def buy_button_active():
     x, y = (354, 834)
@@ -91,11 +91,11 @@ def buyAllItemsOnPage():
             if status == 2:
                 return 2
             
-            time.sleep(1)
+            time.sleep(1) # if you have a good pc u can lower a bit
             confirmBuyButton = (729, 665)
             confirmBuyButtonEquiped = (724, 683)
-            pyautogui.doubleClick(confirmBuyButton) 
             pyautogui.doubleClick(confirmBuyButtonEquiped) # this is what lazy looks like
+            pyautogui.doubleClick(confirmBuyButton)
             print(f"Purchased item")
             time.sleep(1)
         except:
