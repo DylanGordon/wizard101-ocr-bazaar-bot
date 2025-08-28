@@ -1,9 +1,34 @@
 import pyautogui
 import time
+import requests
 from random import randint
 
 screen_width, screen_height = pyautogui.size()
 print(f"Screen size: {screen_width} x {screen_height}")  # needs to be 1440x1080 native & 1360x768 in wizard101 (fullscreen borderless)
+
+def waitforconfirmbuy():
+    positions = [(721, 640), (724, 683)]
+    size = 15
+    while True:
+        for x, y in positions:
+            screenshot = pyautogui.screenshot(region=(x - size//2, y - size//2, size, size))
+            pixels = screenshot.load()
+            for i in range(size):
+                for j in range(size):
+                    r, g, b = pixels[i, j]
+                    if r > 200 and g > 180 and b < 80:
+                        return True
+        try:
+            already_sold = pyautogui.locateOnScreen('sold.png', confidence=0.6, grayscale=True)
+            if already_sold:
+                alreadySoldButton = (934, 636)
+                pyautogui.click(alreadySoldButton)
+                pyautogui.click(alreadySoldButton)
+                print(f"Failed To Purchase item (Already Purchased)")
+                return 2
+        except:
+            pass
+        time.sleep(0.2)
 
 def buy_button_active():
     x, y = (354, 834)
@@ -15,10 +40,6 @@ def buy_button_active():
     return False
 
 def buyAllItemsOnPage():
-    # nothing showed up in items for sale list so return and refresh page
-    if not buy_button_active():
-        return 0
-
     list_region = (460, 240, 660, 540)
     screenshot = pyautogui.screenshot(region=list_region)
 
@@ -45,7 +66,11 @@ def buyAllItemsOnPage():
                 # LIMIT TO MAX 9 ITEMS AS THERE IS ONLY 9 SLOTS IN THE BAZAAR
                 if len(item_positions) >= 9:
                     break
-                    
+
+    # nothing showed up in items for sale list so return and refresh page
+    if not buy_button_active():
+        return 0
+
     clickedCount = 0
     for i, rel_y in enumerate(item_positions):
         screen_x = 460 + (width // 2) + 20
@@ -61,24 +86,18 @@ def buyAllItemsOnPage():
         try:
             pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
             pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
-            time.sleep(0.3)
-            try:
-                already_sold = pyautogui.locateOnScreen('sold.png', confidence=0.6, grayscale=True)
-                if already_sold:
-                    alreadySoldButton = (934, 636)
-                    pyautogui.click(alreadySoldButton[0] + randint(-5, 5), alreadySoldButton[1] + randint(-3, 3))
-                    pyautogui.click(alreadySoldButton[0] + randint(-5, 5), alreadySoldButton[1] + randint(-3, 3))
-                    print(f"Failed To Purchase item (Already Purchased)")
-                    return 2 # somebody else got the item so we need to return and refresh page
-            except:
-                already_sold = None
+                
+            status = waitforconfirmbuy()
+            if status == 2:
+                return 2
             
-            confirmBuyButton = (721, 640)
-            time.sleep(0.3)
-            pyautogui.click(confirmBuyButton)
-            pyautogui.click(confirmBuyButton)
+            time.sleep(1)
+            confirmBuyButton = (729, 665)
+            confirmBuyButtonEquiped = (724, 683)
+            pyautogui.doubleClick(confirmBuyButton) 
+            pyautogui.doubleClick(confirmBuyButtonEquiped) # this is what lazy looks like
             print(f"Purchased item")
-            time.sleep(0.5)
+            time.sleep(1)
         except:
             print(f"Failed To Purchase item")
             return 2
@@ -86,6 +105,8 @@ def buyAllItemsOnPage():
 time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
 while True:
     wallHangingsCategory = (465, 232)
+    outdoorCategory = (608, 231)
+    wandCategory = (527, 234)
     pyautogui.click(wallHangingsCategory[0] + randint(-10, 10), wallHangingsCategory[1] + randint(-5, 5))
     time.sleep(0.1)
     status = buyAllItemsOnPage()
