@@ -94,7 +94,7 @@ def buyAllItemsOnPage():
             if status == 2:
                 return 2
             
-            time.sleep(1)
+            time.sleep(1) # if you have a good pc u can lower a bit
             confirmBuyButton = (729, 665)
             confirmBuyButtonEquiped = (724, 683)
             pyautogui.doubleClick(confirmBuyButton) 
@@ -107,7 +107,7 @@ def buyAllItemsOnPage():
             print(f"Failed To Purchase item")
             return 2
       
-#time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
+time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
 while True:
     wallHangingsCategory = (465, 232)
     outdoorCategory = (608, 231)
