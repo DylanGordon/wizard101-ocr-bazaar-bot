@@ -6,6 +6,18 @@ from random import randint
 screen_width, screen_height = pyautogui.size()
 print(f"Screen size: {screen_width} x {screen_height}")  # needs to be 1440x1080 native & 1360x768 in wizard101 (fullscreen borderless)
 
+def confirmAlreadyPurchased():
+    try:
+        already_sold = pyautogui.locateOnScreen('sold.png', confidence=0.6, grayscale=True)
+        if already_sold:
+            alreadySoldButton = (934, 636)
+            pyautogui.click(alreadySoldButton)
+            pyautogui.click(alreadySoldButton)
+            print(f"Failed To Purchase item (Already Purchased)")
+            return 2
+    except:
+        return 1
+    
 def waitforconfirmbuy():
     positions = [(721, 640), (724, 683)]
     size = 15
@@ -18,16 +30,7 @@ def waitforconfirmbuy():
                     r, g, b = pixels[i, j]
                     if r > 200 and g > 180 and b < 80:
                         return True
-        try:
-            already_sold = pyautogui.locateOnScreen('sold.png', confidence=0.6, grayscale=True)
-            if already_sold:
-                alreadySoldButton = (934, 636)
-                pyautogui.click(alreadySoldButton)
-                pyautogui.click(alreadySoldButton)
-                print(f"Failed To Purchase item (Already Purchased)")
-                return 2
-        except:
-            pass
+        confirmAlreadyPurchased()
         time.sleep(0.3)
 
 def buy_button_active():
@@ -86,23 +89,25 @@ def buyAllItemsOnPage():
         try:
             pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
             pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
-                
+            confirmAlreadyPurchased()    
             status = waitforconfirmbuy()
             if status == 2:
                 return 2
             
-            time.sleep(1) # if you have a good pc u can lower a bit
+            time.sleep(1)
             confirmBuyButton = (729, 665)
             confirmBuyButtonEquiped = (724, 683)
+            pyautogui.doubleClick(confirmBuyButton) 
             pyautogui.doubleClick(confirmBuyButtonEquiped) # this is what lazy looks like
-            pyautogui.doubleClick(confirmBuyButton)
-            print(f"Purchased item")
-            time.sleep(1)
+            time.sleep(5)
+            alreadyPurchased = confirmAlreadyPurchased()
+            if not alreadyPurchased == 2:
+                print(f"Purchased item") # can add discord webhook here if you wanted
         except:
             print(f"Failed To Purchase item")
             return 2
-        
-time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
+      
+#time.sleep(5) # if you have only 1 monitor uncomment this so that you have time to tab into the game
 while True:
     wallHangingsCategory = (465, 232)
     outdoorCategory = (608, 231)
