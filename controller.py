@@ -30,7 +30,16 @@ def waitforconfirmbuy():
                     r, g, b = pixels[i, j]
                     if r > 200 and g > 180 and b < 80:
                         return True
-        confirmAlreadyPurchased()
+        try:
+            already_sold = pyautogui.locateOnScreen('sold.png', confidence=0.6, grayscale=True)
+            if already_sold:
+                alreadySoldButton = (934, 636)
+                pyautogui.click(alreadySoldButton)
+                pyautogui.click(alreadySoldButton)
+                print(f"Failed To Purchase item (Already Purchased)")
+                return 2
+        except:
+            pass
         time.sleep(0.3)
 
 def buy_button_active():
@@ -87,14 +96,14 @@ def buyAllItemsOnPage():
         # Now its time to buy the item
         buyButton = (354, 834)
         try:
-            pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
-            pyautogui.click(buyButton[0] + randint(-5, 5), buyButton[1] + randint(-3, 3))
+            pyautogui.click(buyButton)
+            pyautogui.click(buyButton)
             confirmAlreadyPurchased()    
             status = waitforconfirmbuy()
             if status == 2:
                 return 2
             
-            time.sleep(1) # if you have a good pc u can lower a bit
+            time.sleep(0.2) # if you have a good pc u can lower a bit
             confirmBuyButton = (729, 665)
             confirmBuyButtonEquiped = (724, 683)
             pyautogui.doubleClick(confirmBuyButton) 
