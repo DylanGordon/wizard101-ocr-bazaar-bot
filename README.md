@@ -4,7 +4,7 @@ In late 2024, Wizard101 introduced a major [Bazaar revamp](https://www.wizard101
 
 # DISCLAIMER
 
-Due to this bot not hooking directly into memeory you will lose to other bots. While this bot is good for what it is id reccomend using our [Custom Wizard 101 In Memeory Bot](https://github.com/DylanGordon/wizard101-bazaar-bot) That is releasing to the public in the near future. 
+Due to this bot not hooking directly into memory you will lose to other bots. While this bot is good for what it is id reccomend using our [Custom Wizard 101 In Memory Bot](https://github.com/DylanGordon/wizard101-bazaar-bot) That is releasing to the public in the near future. 
 
 
 # Setup
