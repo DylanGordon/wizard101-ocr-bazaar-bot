@@ -1,6 +1,12 @@
 # wizard101-bazaar-bot
 In late 2024, Wizard101 introduced a major [Bazaar revamp](https://www.wizard101.com/game/updatenotes/selenopolis#bazaarrevamp) that completely removed the purchase delay, making buying and selling instant, They also added a search bar so players can quickly find specific items. This bot was created to take advantage of those changes by targeting specific items with the search bar making it super easy to catch rare or valuable items before they disappear from the Bazaar. This bot uses image recognition and pixel based color detection to detect items that appear for sale on the market to quickly purchase them before they can be sold.
 
+
+# DISCLAIMER
+
+Due to this bot not hooking directly into memeory you will lose to other bots. While this bot is good for what it is id reccomend using our [Custom Wizard 101 In Memeory Bot](https://github.com/DylanGordon/wizard101-bazaar-bot) That is releasing to the public in the near future. 
+
+
 # Setup
 
 First you need to install the packages that this project requires. You can install them using pip by doing the following after downloading the repo:
